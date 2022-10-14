@@ -1,0 +1,11 @@
+Объектно-ориентированное программирование (ООП)
+Object-Oriented Programming (OOP)
+
+Class - это множество объектов с одинаковым набором атрибутов (характеристик)
+состояний и поведений.
+members
+
+Переменные члены класса
+Member-functions
+UML-диаграмм
+UML - Unified Modelling Language
