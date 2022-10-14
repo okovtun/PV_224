@@ -1,6 +1,6 @@
-https://github.com/okovtun/PV_224.git
+п»їhttps://github.com/okovtun/PV_224.git
 https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vNipn
 
 TODO:
-0. Выучить теорию!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-1. *В класс Point добавить get/set-методы.
+0. Р’С‹СѓС‡РёС‚СЊ С‚РµРѕСЂРёСЋ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+1. *Р’ РєР»Р°СЃСЃ Point РґРѕР±Р°РІРёС‚СЊ get/set-РјРµС‚РѕРґС‹.
