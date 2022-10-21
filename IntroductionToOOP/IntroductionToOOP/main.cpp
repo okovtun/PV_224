@@ -5,6 +5,7 @@ using std::cout;
 using std::endl;
 
 #define tab "\t"
+#define delimiter "\n---------------------------------------------------\n"
 
 //Создавая класс или структуру мы создаем новый тип данных,
 //следовательно, объекты (экземпляры) нашего класса или структуры являются
@@ -36,23 +37,29 @@ public:
 	}
 
 	//				Constructors:
-	Point()
+	/*Point()
 	{
 		x = y = double();
 		//double() - значение по умолчанию для типа double
-		cout << "Constructor:\t" << this << endl;
-	}
-	Point(double x)
+		cout << "DefaultConstructor:\t" << this << endl;
+	}*/
+	/*Point(double x)
 	{
 		this->x = x;
 		this->y = 0;
 		cout << "1ArgConstructor:" << this << endl;
-	}
-	Point(double x, double y)
+	}*/
+	Point(double x = 0, double y = 0)
 	{
 		this->x = x;
 		this->y = y;
 		cout << "Constructor:\t" << this << endl;
+	}
+	Point(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyConstructor:" << this << endl;
 	}
 	~Point()
 	{
@@ -60,14 +67,33 @@ public:
 	}
 
 	//				Methods:
+	double distance(const Point& other)const
+	{
+		/*double x_distance = this->x - other.x;
+		double y_distance = this->y - other.y;
+		double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
+		return distance;*/
+		return sqrt(pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
+	}
 	void print()const
 	{
 		cout << "X = " << x << "\tY = " << y << endl;
 	}
 };
 
+double distance(const Point& A, const Point& B)
+{
+	/*double x_distance = A.get_x() - B.get_x();
+	double y_distance = A.get_y() - B.get_y();
+	double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
+	return distance;*/
+	return sqrt(pow(A.get_x() - B.get_x(), 2) + pow(A.get_y() - B.get_y(), 2));
+}
+
 //#define STRUCT_POINT
 //#define GET_SET_CHECK
+#define DISTANCE_CHECK
+//#define CONSTRUCTORS_CHECK
 
 void main()
 {
@@ -108,6 +134,24 @@ void main()
 	cout << endl;
 #endif // GET_SET_CHECK
 
+#ifdef DISTANCE_CHECK
+	Point A(2, 3);
+	Point B(7, 8);
+	A.print();
+	B.print();
+	cout << delimiter << endl;
+	cout << "Расстояние от точки 'A' до точки 'B': " << A.distance(B) << endl;
+	cout << delimiter << endl;
+	cout << "Расстояние от точки 'B' до точки 'A': " << B.distance(A) << endl;
+	cout << delimiter << endl;
+	cout << "Расстояние между точками 'A' и 'B': " << distance(A, B) << endl;
+	cout << delimiter << endl;
+	cout << "Расстояние между точками 'B' и 'A': " << distance(B, A) << endl;
+	cout << delimiter << endl;
+#endif // DISTANCE_CHECK
+
+
+#ifdef CONSTRUCTORS_CHECK
 	Point A;	//Default constructor
 	A.print();
 
@@ -116,6 +160,11 @@ void main()
 
 	Point C(2, 3);
 	C.print();
+
+	Point D = C;	//CopyConstructor
+	D.print();
+#endif // CONSTRUCTORS_CHECK
+
 }
 
 /*
@@ -142,8 +191,8 @@ get (взять, получить)	- используются для досту�
 						  т.е., позволяют получить (взять) значение закрытой переменной.
 set (задать, установить)- используются для доступа к переменным членам класса на запись,
 						  т.е., позволяют задать значение закрытой переменной в классе.
-						  Кроме того, set-методы обеспечивают фильтрацию данных, т.е., 
-						  защищают переменные члены класса от записи в них некорректных 
+						  Кроме того, set-методы обеспечивают фильтрацию данных, т.е.,
+						  защищают переменные члены класса от записи в них некорректных
 						  значений.
 -----------------------------------------------------------
 */
