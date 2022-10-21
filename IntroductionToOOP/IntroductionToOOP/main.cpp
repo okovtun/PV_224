@@ -66,6 +66,15 @@ public:
 		cout << "Destructor:\t" << this << endl;
 	}
 
+	//				Operators:
+	Point& operator=(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+
 	//				Methods:
 	double distance(const Point& other)const
 	{
@@ -92,7 +101,7 @@ double distance(const Point& A, const Point& B)
 
 //#define STRUCT_POINT
 //#define GET_SET_CHECK
-#define DISTANCE_CHECK
+//#define DISTANCE_CHECK
 //#define CONSTRUCTORS_CHECK
 
 void main()
@@ -163,8 +172,18 @@ void main()
 
 	Point D = C;	//CopyConstructor
 	D.print();
+	Point E;		//DefaultConstructor
+	E = D;			//Assignment operator (CopyAssignment)
+	E.print();
 #endif // CONSTRUCTORS_CHECK
 
+	int a, b, c;
+	a = b = c = 0;
+
+	Point A, B, C;
+	cout << delimiter << endl;
+	A = B = C = Point(2, 3);
+	cout << delimiter << endl;
 }
 
 /*
@@ -214,6 +233,6 @@ set (задать, установить)- используются для дос
 				 в которой он объявлен.
 				 ~
 				 void
-3. Assignment operator;
+3. Assignment operator (CopyAssignment);
 -----------------------------------------------------------
 */
