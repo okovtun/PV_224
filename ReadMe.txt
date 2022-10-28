@@ -2,8 +2,11 @@
 https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vNipn
 
 TODO:
+Проверочный код в секции CONVERSION_FROM_CLASS_TO_OTHER_TYPES должен заработать.
+
+DONE:
 Для класса Fraction перегрузить:
-1. Составные присваивания: +=, -=, *=, /=;
+1. Составные присваивания: +=, -=, *=, /=;		DONE
 2. Операторы сравнения: ==, !=, >, <, >=, <=;
 3. Написать метод reduce(), который сокращает дробь;
 

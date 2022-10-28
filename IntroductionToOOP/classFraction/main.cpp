@@ -6,6 +6,9 @@ using std::endl;
 
 #define delimiter "\n------------------------------------------------\n"
 
+class Fraction;		//Объявление класса
+Fraction operator*(Fraction left, Fraction right);
+
 class Fraction
 {
 	int integer;
@@ -46,7 +49,7 @@ public:
 		this->denominator = 1;
 		cout << "DefConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
@@ -87,6 +90,11 @@ public:
 		this->denominator = other.denominator;
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
+	}
+	Fraction& operator*=(const Fraction& other)
+	{
+		//	a *= b;		a = a * b;
+		return *this = *this*other;
 	}
 
 	Fraction& operator++()
@@ -181,7 +189,51 @@ Fraction operator+(Fraction left, Fraction right)
 	).to_proper();
 }
 
+//					Comparison operators:
+bool operator==(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return
+		left.get_numerator()*right.get_denominator() ==
+		right.get_numerator()*left.get_denominator();
+}
+bool operator!=(const Fraction& left, const Fraction& right)
+{
+	return !(left == right);
+}
+bool operator>(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return
+		left.get_numerator()*right.get_denominator() >
+		right.get_numerator()*left.get_denominator();
+}
+bool operator<(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return
+		left.get_numerator()*right.get_denominator() <
+		right.get_numerator()*left.get_denominator();
+}
+bool operator>=(const Fraction& left, const Fraction& right)
+{
+	return left > right || left == right;
+}
+bool operator<=(const Fraction& left, const Fraction& right)
+{
+	return !(left > right);
+}
+
 //#define CONSTRUCTORS_CHECK
+//#define ARITHMETICAL_OPERATORS_CHECK
+//#define COMPOUND_ASSIGNMENTS_CHECK
+//#define COMPARISON_OPERATORS_CHECK
+//#define TYPE_CONVERSIONS_BASICS
+//#define CONVERSION_FROM_OTHER_TO_CLASS
+#define CONVERSION_FROM_CLASS_TO_OTHER_TYPES
 
 void main()
 {
@@ -202,21 +254,105 @@ void main()
 	cout << D << endl;
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef ARITHMETICAL_OPERATORS_CHECK
 	Fraction A(1, 2, 3);
 	Fraction B(3, 4, 5);
 	Fraction C = A * B;
 	cout << C << endl;
 	cout << A / B << endl;
 	cout << A + B << endl;
-	
+
 	for (double i = 0.25; i < 10; i++)
 	{
 		cout << i << "\t";
 	}
 	cout << endl;
-	for (Fraction i(3, 4); i.get_integer() < 10; i++)
+	for (Fraction i(3, 4); i.get_integer() < 10; ++i)
 	{
 		cout << i << "\t";
 	}
 	cout << endl;
+#endif // ARITHMETICAL_OPERATORS_CHECK
+
+#ifdef COMPOUND_ASSIGNMENTS_CHECK
+	Fraction A(1, 2, 3);
+	Fraction B(3, 4, 5);
+
+	A *= B;
+
+	cout << A << endl;
+#endif // COMPOUND_ASSIGNMENTS_CHECK
+
+#ifdef COMPARISON_OPERATORS_CHECK
+	/*Fraction A(1, 2);
+Fraction B(5, 11);
+if (A == B)
+{
+	cout << "Дроби равны" << endl;
+}
+else
+{
+	cout << "Дроби разные" << endl;
+}*/
+	Fraction A(1, 2);
+	Fraction B(5, 10);
+	//cout << (A == B) << endl;
+	cout << (Fraction(1, 2) <= Fraction(5, 11)) << endl;
+	//cout << (2 == 2) << endl;  
+#endif // COMPARISON_OPERATORS_CHECK
+
+#ifdef TYPE_CONVERSIONS_BASICS
+			//(type)value;	//C-like notation (С-подобная форма записи)
+//type(value);	//Functional notation (Функциональная форма записи)
+
+//Warning: Conversion from 'type' to 'type', possible loss of data.
+
+//cout << (double)8 / 5 << endl;
+
+	int a = 2;		//No conversions
+	double b = 3;	//Conversion from less to more.
+	int c = b;		//Conversion from more to less with no data loss.
+	int d = 2.999;	//Conversion from more to less with data loss.
+	cout << d << endl;
+#endif // TYPE_CONVERSIONS_BASICS
+
+#ifdef CONVERSION_FROM_OTHER_TO_CLASS
+	/*
+1. From other to Class:
+	Single-Argument constructor;
+	Assignment operator;
+2. From Class to other type;
+
+	operator type()const
+	{
+		.....;
+		conversion-algorithm;
+		.....;
+	}
+
+	explicit
+*/
+
+	Fraction A = Fraction(5);	//Conversion from 'int' to 'Fraction'
+	cout << A << endl;
+	cout << delimiter << endl;
+	Fraction B;		//Default constructor
+	cout << delimiter << endl;
+	B = (Fraction)8;
+	cout << delimiter << endl;
+	cout << B << endl;
+#endif // CONVERSION_FROM_OTHER_TO_CLASS
+
+#ifdef CONVERSION_FROM_CLASS_TO_OTHER_TYPES
+	Fraction A(2, 3, 4);
+	int a = A;
+	cout << a << endl;
+	
+	double b = A;
+	cout << b << endl;
+
+	Fraction B = 2.75;
+	cout << B << endl;
+#endif // HOME_WORK_1
+
 }
