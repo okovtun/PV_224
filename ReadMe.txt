@@ -6,7 +6,8 @@ TODO:
 	Fraction A;
 	cout << "Введите простую дробь: "; cin >> A;
 	cout << A << endl;
-2. Проверочный код в секции OPERATOR_PLUS_CHECK должен заработать;
+2. Проверочный код должен заработать:
+	https://github.com/okovtun/PV_224/blob/398ca6279a92adfe0a564cf58b16beb3a9c93180/IntroductionToOOP/String/main.cpp#L94;
 
 DONE:
 Проверочный код в секции CONVERSION_FROM_CLASS_TO_OTHER_TYPES должен заработать.
