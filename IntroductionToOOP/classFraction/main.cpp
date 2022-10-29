@@ -56,6 +56,15 @@ public:
 		this->denominator = 1;
 		cout << "1ArgConstructor:" << this << endl;
 	}
+	Fraction(double decimal)
+	{
+		integer = decimal;	//Сохраняем целую часть
+		decimal += 1e-10;
+		denominator = 1e+9;
+		numerator = (decimal - integer)*denominator;
+		reduce();
+		cout << "DoubleConstructor:" << this << endl;
+	}
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
@@ -109,6 +118,16 @@ public:
 		return old;
 	}
 
+	//				Type-cast operators:
+	explicit operator int()const
+	{
+		return integer + numerator / denominator;
+	}
+	explicit operator double()const
+	{
+		return integer + (double)numerator / denominator;
+	}
+
 	//				Methods
 	Fraction& to_improper()
 	{
@@ -131,6 +150,24 @@ public:
 		inverted.denominator = buffer;*/
 		swap(inverted.numerator, inverted.denominator);
 		return inverted;
+	}
+	Fraction& reduce()
+	{
+		if (numerator == 0)return *this;
+		//https://www.webmath.ru/poleznoe/formules_12_7.php
+		int more, less, rest;//rest - остаток
+		if (numerator > denominator)more = numerator, less = denominator;
+		else less = numerator, more = denominator;
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more;	//GCD - Greatest Common Dividor (Наибольший общий делитель)
+		numerator /= GCD;
+		denominator /= GCD;
+		return *this;
 	}
 };
 
@@ -156,7 +193,7 @@ Fraction operator*(Fraction left, Fraction right)
 	result.set_denominator(left.get_denominator()*right.get_denominator());*/
 	/*Fraction result
 	(
-		left.get_numerator()*right.get_numerator(),	
+		left.get_numerator()*right.get_numerator(),
 		left.get_denominator()*right.get_denominator()
 	);
 	return result;*/
@@ -345,14 +382,16 @@ else
 
 #ifdef CONVERSION_FROM_CLASS_TO_OTHER_TYPES
 	Fraction A(2, 3, 4);
-	int a = A;
+	int a = (int)A;
 	cout << a << endl;
-	
-	double b = A;
+
+	double b = (double)A;
 	cout << b << endl;
 
-	Fraction B = 2.75;
+	Fraction B = 2.8;
 	cout << B << endl;
+
+	//cout << .1 + .3 << endl;
 #endif // HOME_WORK_1
 
 }
