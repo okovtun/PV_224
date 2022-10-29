@@ -2,6 +2,13 @@
 https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vNipn
 
 TODO:
+1. В классе Fraction перегрузить оператор ввода:
+	Fraction A;
+	cout << "Введите простую дробь: "; cin >> A;
+	cout << A << endl;
+2. Проверочный код в секции OPERATOR_PLUS_CHECK должен заработать;
+
+DONE:
 Проверочный код в секции CONVERSION_FROM_CLASS_TO_OTHER_TYPES должен заработать.
 
 DONE:
