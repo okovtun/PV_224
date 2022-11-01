@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 using std::cin;
@@ -183,6 +184,45 @@ ostream& operator<<(ostream& os, const Fraction& obj)
 	else if (obj.get_integer() == 0) os << 0;
 	return os;
 }
+istream& operator>>(istream& is, Fraction& obj)
+{
+	/*int integer, numerator, denominator;
+	is >> integer >> numerator >> denominator;
+	obj = Fraction(integer, numerator, denominator);*/
+	const int SIZE = 256;
+	char buffer[SIZE]{};
+	//is >> buffer;
+	is.getline(buffer, SIZE);
+	//	1(2/3)
+	//	1/2
+	//	2 3/4
+	char delimiters[] = "()/ ";
+	int number[3] = {};	//здесь будут храниться числа, извеченные из строки.
+
+	int n = 0;
+	/*for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+	{
+		//pch - это указатель, который хранит адрес токена.
+		//токен - это часть строки, находящаяся между двумя разделителями
+		number[n++] = atoi(pch);
+
+//atoi(char* str);	//ASCII string to integer
+		//https://cplusplus.com/reference/cstdlib/atoi/
+	}*/
+
+	char* pch = strtok(buffer, delimiters);
+	do
+	{
+		number[n++] = atoi(pch);//to_int_number
+		//atoi - ASCII string to Integer
+		if (n >= 3)break;
+	} while (pch = strtok(0, delimiters));
+
+	for (int i = 0; i < n; i++)cout << number[i] << "\t";
+	cout << endl;
+
+	return is;
+}
 
 Fraction operator*(Fraction left, Fraction right)
 {
@@ -191,6 +231,9 @@ Fraction operator*(Fraction left, Fraction right)
 	/*Fraction result;
 	result.set_numerator(left.get_numerator()*right.get_numerator());
 	result.set_denominator(left.get_denominator()*right.get_denominator());*/
+
+
+
 	/*Fraction result
 	(
 		left.get_numerator()*right.get_numerator(),
@@ -270,7 +313,7 @@ bool operator<=(const Fraction& left, const Fraction& right)
 //#define COMPARISON_OPERATORS_CHECK
 //#define TYPE_CONVERSIONS_BASICS
 //#define CONVERSION_FROM_OTHER_TO_CLASS
-#define CONVERSION_FROM_CLASS_TO_OTHER_TYPES
+//#define CONVERSION_FROM_CLASS_TO_OTHER_TYPES
 
 void main()
 {
@@ -394,4 +437,7 @@ else
 	//cout << .1 + .3 << endl;
 #endif // HOME_WORK_1
 
-}
+	Fraction A;
+	cout << "Введите простую дробь: "; cin >> A;
+	cout << A << endl;
+	}
