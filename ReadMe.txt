@@ -2,11 +2,15 @@
 https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vNipn
 
 TODO:
-1. В классе Fraction перегрузить оператор ввода:
+В классе String реализовать MoveMethods;
+https://cplusplus.com/doc/tutorial/classes2/
+
+DONE:
+1. В классе Fraction перегрузить оператор ввода:		DONE
 	Fraction A;
 	cout << "Введите простую дробь: "; cin >> A;
 	cout << A << endl;
-2. Проверочный код должен заработать:
+2. Проверочный код должен заработать:					DONE
 	https://github.com/okovtun/PV_224/blob/398ca6279a92adfe0a564cf58b16beb3a9c93180/IntroductionToOOP/String/main.cpp#L94;
 
 DONE:
