@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+ï»¿#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 using std::cin;
@@ -7,7 +7,7 @@ using std::endl;
 
 #define delimiter "\n------------------------------------------------\n"
 
-class Fraction;		//Îáúÿâëåíèå êëàññà
+class Fraction;		//ÐžÐ±ÑŠÑÐ²Ð»ÐµÐ½Ð¸Ðµ ÐºÐ»Ð°ÑÑÐ°
 Fraction operator*(Fraction left, Fraction right);
 
 class Fraction
@@ -59,7 +59,7 @@ public:
 	}
 	Fraction(double decimal)
 	{
-		integer = decimal;	//Ñîõðàíÿåì öåëóþ ÷àñòü
+		integer = decimal;	//Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ Ñ†ÐµÐ»ÑƒÑŽ Ñ‡Ð°ÑÑ‚ÑŒ
 		decimal += 1e-10;
 		denominator = 1e+9;
 		numerator = (decimal - integer)*denominator;
@@ -156,7 +156,7 @@ public:
 	{
 		if (numerator == 0)return *this;
 		//https://www.webmath.ru/poleznoe/formules_12_7.php
-		int more, less, rest;//rest - îñòàòîê
+		int more, less, rest;//rest - Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ðº
 		if (numerator > denominator)more = numerator, less = denominator;
 		else less = numerator, more = denominator;
 		do
@@ -165,7 +165,7 @@ public:
 			more = less;
 			less = rest;
 		} while (rest);
-		int GCD = more;	//GCD - Greatest Common Dividor (Íàèáîëüøèé îáùèé äåëèòåëü)
+		int GCD = more;	//GCD - Greatest Common Dividor (ÐÐ°Ð¸Ð±Ð¾Ð»ÑŒÑˆÐ¸Ð¹ Ð¾Ð±Ñ‰Ð¸Ð¹ Ð´ÐµÐ»Ð¸Ñ‚ÐµÐ»ÑŒ)
 		numerator /= GCD;
 		denominator /= GCD;
 		return *this;
@@ -197,19 +197,19 @@ istream& operator>>(istream& is, Fraction& obj)
 	//	1/2
 	//	2 3/4
 	char delimiters[] = "()/ ";
-	int number[3] = {};	//çäåñü áóäóò õðàíèòüñÿ ÷èñëà, èçâå÷åííûå èç ñòðîêè.
+	int number[3] = {};	//Ð·Ð´ÐµÑÑŒ Ð±ÑƒÐ´ÑƒÑ‚ Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒÑÑ Ñ‡Ð¸ÑÐ»Ð°, Ð¸Ð·Ð²ÐµÑ‡ÐµÐ½Ð½Ñ‹Ðµ Ð¸Ð· ÑÑ‚Ñ€Ð¾ÐºÐ¸.
 
 	int n = 0;
 	/*for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
 	{
-		//pch - ýòî óêàçàòåëü, êîòîðûé õðàíèò àäðåñ òîêåíà.
-		//òîêåí - ýòî ÷àñòü ñòðîêè, íàõîäÿùàÿñÿ ìåæäó äâóìÿ ðàçäåëèòåëÿìè
+		//pch - ÑÑ‚Ð¾ ÑƒÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ Ð°Ð´Ñ€ÐµÑ Ñ‚Ð¾ÐºÐµÐ½Ð°.
+		//Ñ‚Ð¾ÐºÐµÐ½ - ÑÑ‚Ð¾ Ñ‡Ð°ÑÑ‚ÑŒ ÑÑ‚Ñ€Ð¾ÐºÐ¸, Ð½Ð°Ñ…Ð¾Ð´ÑÑ‰Ð°ÑÑÑ Ð¼ÐµÐ¶Ð´Ñƒ Ð´Ð²ÑƒÐ¼Ñ Ñ€Ð°Ð·Ð´ÐµÐ»Ð¸Ñ‚ÐµÐ»ÑÐ¼Ð¸
 		number[n++] = atoi(pch);
 
 //atoi(char* str);	//ASCII string to integer
 		//https://cplusplus.com/reference/cstdlib/atoi/
 	}*/
-
+	//https://cplusplus.com/reference/cstring/strtok/
 	char* pch = strtok(buffer, delimiters);
 	do
 	{
@@ -218,8 +218,20 @@ istream& operator>>(istream& is, Fraction& obj)
 		if (n >= 3)break;
 	} while (pch = strtok(0, delimiters));
 
-	for (int i = 0; i < n; i++)cout << number[i] << "\t";
-	cout << endl;
+	//for (int i = 0; i < n; i++)cout << number[i] << "\t";	cout << endl;
+	obj = Fraction();
+	switch (n)
+	{
+	case 1: obj.set_integer(number[0]); break;
+	case 2:
+		obj.set_numerator(number[0]);
+		obj.set_denominator(number[1]);
+		break;
+	case 3:
+		obj.set_integer(number[0]);
+		obj.set_numerator(number[1]);
+		obj.set_denominator(number[2]);
+	}
 
 	return is;
 }
@@ -368,11 +380,11 @@ void main()
 Fraction B(5, 11);
 if (A == B)
 {
-	cout << "Äðîáè ðàâíû" << endl;
+	cout << "Ð”Ñ€Ð¾Ð±Ð¸ Ñ€Ð°Ð²Ð½Ñ‹" << endl;
 }
 else
 {
-	cout << "Äðîáè ðàçíûå" << endl;
+	cout << "Ð”Ñ€Ð¾Ð±Ð¸ Ñ€Ð°Ð·Ð½Ñ‹Ðµ" << endl;
 }*/
 	Fraction A(1, 2);
 	Fraction B(5, 10);
@@ -382,8 +394,8 @@ else
 #endif // COMPARISON_OPERATORS_CHECK
 
 #ifdef TYPE_CONVERSIONS_BASICS
-			//(type)value;	//C-like notation (Ñ-ïîäîáíàÿ ôîðìà çàïèñè)
-//type(value);	//Functional notation (Ôóíêöèîíàëüíàÿ ôîðìà çàïèñè)
+			//(type)value;	//C-like notation (Ð¡-Ð¿Ð¾Ð´Ð¾Ð±Ð½Ð°Ñ Ñ„Ð¾Ñ€Ð¼Ð° Ð·Ð°Ð¿Ð¸ÑÐ¸)
+//type(value);	//Functional notation (Ð¤ÑƒÐ½ÐºÑ†Ð¸Ð¾Ð½Ð°Ð»ÑŒÐ½Ð°Ñ Ñ„Ð¾Ñ€Ð¼Ð° Ð·Ð°Ð¿Ð¸ÑÐ¸)
 
 //Warning: Conversion from 'type' to 'type', possible loss of data.
 
@@ -437,7 +449,7 @@ else
 	//cout << .1 + .3 << endl;
 #endif // HOME_WORK_1
 
-	Fraction A;
-	cout << "Ââåäèòå ïðîñòóþ äðîáü: "; cin >> A;
+	Fraction A(1024, 2048, 3072);
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¾ÑÑ‚ÑƒÑŽ Ð´Ñ€Ð¾Ð±ÑŒ: "; cin >> A;
 	cout << A << endl;
 	}
