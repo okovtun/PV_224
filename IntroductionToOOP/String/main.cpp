@@ -1,4 +1,5 @@
-﻿#include<iostream>
+﻿//HeaderInitialisationInString
+#include<iostream>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -25,33 +26,33 @@ public:
 		return size;
 	}
 	//				Constructors:
-	explicit String(size_t size = 80)
+	explicit String(size_t size = 80) :size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		cout << "DefConstructor:\t" << this << endl;
 	}
-	String(const char str[])
+	String(const char str[]) :size(strlen(str) + 1), str(new char[size] {})
 	{
-		this->size = strlen(str) + 1;
-		this->str = new char[size] {};
+		//this->size = strlen(str) + 1;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 			this->str[i] = str[i];
 		cout << "Constructor:\t" << endl;
 	}
-	String(const String& other)
+	String(const String& other):size(other.size), str(new char[size] {})
 	{
 		//Deep copy - побитовое копирование
-		this->size = other.size;
-		this->str = new char[size] {};
+		//this->size = other.size;
+		//this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:" << this << endl;
 	}
-	String(String&& other)
+	String(String&& other):size(other.size), str(other.str)
 	{
 		//Shallow copy:
-		this->size = other.size;
-		this->str = other.str;
+		//this->size = other.size;
+		//this->str = other.str;
 		other.size = 0;
 		other.str = nullptr;
 		cout << "MoveConstructor:" << this << endl;
@@ -128,6 +129,7 @@ ostream& operator<<(ostream& os, const String& obj)
 
 //#define CONSTRUCTORS_CHECK
 #define OPERATOR_PLUS_CHECK
+//#define WAYS_TO_CALL_CONSTRUCTORS
 
 void main()
 {
@@ -156,11 +158,12 @@ void main()
 #ifdef OPERATOR_PLUS_CHECK
 	String str1 = "Hello";
 	String str2 = "World";
-	/*String str3;
-	str3 = str1 + str2;
-	cout << str3 << endl;*/
+	String str3 = str1 + str2;
+	cout << str3 << endl;
 	str1 += str2;
 	cout << str1 << endl;
+	String str4 = str1;
+	cout << str4 << endl;
 #endif // OPERATOR_PLUS_CHECK
 
 	/*
@@ -178,4 +181,24 @@ void main()
 	//The rule of 0:
 	//The rule of 5 (C++ 11): ~Destructor(), CopyConstructor(), MoveConstructor(), CopyAssignment() и MoveAssignment();
 	//https://en.cppreference.com/w/cpp/language/rule_of_three
+
+#ifdef WAYS_TO_CALL_CONSTRUCTORS
+	String str1;		//DefaultConstructor
+	str1.print();
+	String str2(5);		//Single-argumant type 'int'
+	str2.print();
+	String str3 = "Hello";//Single-argument type 'const char*'
+	str3.print();
+	String str4();	//Это выражение НЕ создает объект, а просто объявляет функцию str4(),
+					//которая ничего не принимает, и возвращает значение типа 'String'.
+	//str4.print();
+	//Если нужно явно вызвать конструктор по умолчанию, то это можно сделать так:
+	String str5{};	//Явный вызов конструктора по умолчанию
+	str5.print();
+	String str6{ 7 };
+	str6.print();
+	String str7{ "Hello" };
+	str7.print();
+#endif // WAYS_TO_CALL_CONSTRUCTORS
+
 }
