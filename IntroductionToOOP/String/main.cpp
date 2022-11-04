@@ -2,7 +2,10 @@
 using namespace std;
 using std::cin;
 using std::cout;
-using std::endl;;
+using std::endl;
+
+class String;
+String operator+(const String& left, const String& right);
 
 class String
 {
@@ -72,6 +75,21 @@ public:
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
+	String& operator=(String&& other)
+	{
+		if (this == &other)return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment:\t" << this << endl;
+		return *this;
+	}
+	String& operator+=(const String& other)
+	{
+		return *this = *this + other;
+	}
 
 	char operator[](int i)const		//i - index
 	{
@@ -138,8 +156,11 @@ void main()
 #ifdef OPERATOR_PLUS_CHECK
 	String str1 = "Hello";
 	String str2 = "World";
-	String str3 = str1 + str2;
-	cout << str3 << endl;
+	/*String str3;
+	str3 = str1 + str2;
+	cout << str3 << endl;*/
+	str1 += str2;
+	cout << str1 << endl;
 #endif // OPERATOR_PLUS_CHECK
 
 	/*
@@ -152,4 +173,9 @@ void main()
 		Class(Class&& other);
 		Class& operator=(Class&& other);
 	*/
+
+	//The rule of 3: ~Destructor(), CopyConstructor() и CopyAssignment()
+	//The rule of 0:
+	//The rule of 5 (C++ 11): ~Destructor(), CopyConstructor(), MoveConstructor(), CopyAssignment() и MoveAssignment();
+	//https://en.cppreference.com/w/cpp/language/rule_of_three
 }

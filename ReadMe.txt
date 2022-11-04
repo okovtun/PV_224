@@ -4,6 +4,7 @@ https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vN
 TODO:
 В классе String реализовать MoveMethods;
 https://cplusplus.com/doc/tutorial/classes2/
+https://en.cppreference.com/w/cpp/language/rule_of_three
 
 DONE:
 1. В классе Fraction перегрузить оператор ввода:		DONE
