@@ -3,6 +3,9 @@ https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vN
 https://meet.google.com/mho-khdw-fhj
 
 TODO:
+В проект Academy добавить класс Graduate, который описывает дипломника.
+
+TODO:
 Скомпилировать проект String в *.lib-файл, и проверить этот *.lib-файл в другом проекте.
 
 DONE:
