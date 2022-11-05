@@ -3,6 +3,9 @@ https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vN
 https://meet.google.com/mho-khdw-fhj
 
 TODO:
+Скомпилировать проект String в *.lib-файл, и проверить этот *.lib-файл в другом проекте.
+
+DONE:
 В классе String реализовать MoveMethods;
 https://cplusplus.com/doc/tutorial/classes2/
 https://en.cppreference.com/w/cpp/language/rule_of_three
