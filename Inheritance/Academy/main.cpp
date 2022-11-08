@@ -45,6 +45,11 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " y.o.";
+}
+
 #define STUDENT_TAKE_PARAMETERS	const std::string& specialty, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS	specialty, group, rating, attendance
 
@@ -110,6 +115,12 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	os << (Human&)obj << " ";
+	return os << obj.get_specialty() << " " << obj.get_group() << " " << obj.get_rating() << " " << obj.get_attendance();
+}
+
 class Teacher :public Human
 {
 	std::string specialty;
@@ -155,6 +166,12 @@ public:
 	}
 };
 
+std::ostream& operator<<(std::ostream& os, const Teacher& obj)
+{
+	os << (Human&)obj;
+	return os << obj.get_specialty() << " " << obj.get_experience() << " years";
+}
+
 class Undergrad:public Student
 {
 	std::string topic;
@@ -185,6 +202,11 @@ public:
 		cout << "Тема дипломного проекта: " << topic << endl;
 	}
 };
+
+std::ostream& operator<<(std::ostream& os, const Undergrad& obj)
+{
+	return os << (Student&)obj << " " << obj.get_topic();
+}
 
 //#define INHERITANCE
 
@@ -231,7 +253,13 @@ void main()
 	//Specialisation - Уточнение (DownCast - преобразование сверху вниз)
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
-		group[i]->print();
+		//group[i]->print();
+		//cout << *group[i] << endl;
+		cout << typeid(*group[i]).name() << endl;
+		if (typeid(*group[i]) == typeid(Student))cout << *dynamic_cast<Student*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Undergrad))cout << *dynamic_cast<Undergrad*>(group[i]) << endl;
+		if (typeid(*group[i]) == typeid(Teacher))cout << *dynamic_cast<Teacher*>(group[i]) << endl;
+		//dynamic_cast<Derived*>(Base*);
 		cout << delimiter << endl;
 	}
 
