@@ -33,7 +33,7 @@ public:
 	{
 		cout << "HConstructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
@@ -217,6 +217,7 @@ void main()
 		2. Virtual methods;
 	*/
 
+	//Generalisation (UpCast - преобразование типов снизу вверх)
 	Human* group[] =
 	{
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95),
@@ -227,9 +228,15 @@ void main()
 		new Teacher("Einstein", "Albert", 143, "Astronomy", 120)
 	};
 
+	//Specialisation - Уточнение (DownCast - преобразование сверху вниз)
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		group[i]->print();
 		cout << delimiter << endl;
+	}
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
 	}
 }
