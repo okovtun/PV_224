@@ -47,7 +47,7 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
-	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age();
+	return obj.print(os);
 }
 
 #define STUDENT_TAKE_PARAMETERS	const std::string& specialty, const std::string& group, double rating, double attendance
@@ -108,10 +108,10 @@ public:
 	}
 
 	//					Methods:
-	void print()const
+	std::ostream& print(std::ostream& os)const override
 	{
-		Human::print();
-		cout << specialty << " " << group << " " << rating << " " << attendance << endl;
+		;
+		return Human::print(os) << specialty << " " << group << " " << rating << " " << attendance << endl;
 	}
 };
 
@@ -153,10 +153,9 @@ public:
 	}
 
 	//				Methods:
-	void print()const
+	std::ostream& print(std::ostream& os)const override
 	{
-		Human::print();
-		cout << specialty << " " << experience << endl;
+		return  Human::print(os) << specialty << " " << experience << endl;
 	}
 };
 
@@ -184,10 +183,10 @@ public:
 		cout << "GDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	void print()const
+	std::ostream& print(std::ostream& os)const override
 	{
-		Student::print();
-		cout << "Тема дипломного проекта: " << topic << endl;
+		;
+		return Student::print(os) << "Тема дипломного проекта: " << topic << endl;
 	}
 };
 
