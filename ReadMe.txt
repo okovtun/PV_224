@@ -2,6 +2,9 @@
 https://www.youtube.com/watch?v=6V3cNxxigSc&list=PLeqyOOqxeiINRecRZn85PzuYkQg2vNipn
 https://meet.google.com/mho-khdw-fhj
 
+English:
+https://www.newenglishfile.ru/
+
 TODO:
 1. Проработать dynamic_cast;
 2. Оптимизировать перегрузку операторов вывода таким образом, 
