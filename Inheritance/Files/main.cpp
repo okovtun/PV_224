@@ -19,7 +19,7 @@ void main()
 	//system("start qmmp.exe");  
 #endif // WRITE_TO_FILE
 
-	ifstream fin("File.txt");
+	ifstream fin("File.txt");	//Поток открывается прямо при создании
 	if (fin.is_open())
 	{
 		//Будем читать файл
