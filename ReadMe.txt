@@ -5,8 +5,14 @@ https://meet.google.com/mho-khdw-fhj
 English:
 https://www.newenglishfile.ru/
 
-TODO:
+FreeBSD:
+https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubMPrO&index=62
 
+TODO:
+1. Из файла 201 RAW.txt сделать новый файл 201 ready.txt, в котором столбики с IP и MAC адресами поменяны местами
+	https://github.com/okovtun/PV_224/blob/master/Inheritance/FilesTask/201%20RAW.txt
+2. Из файла 201 RAW.txt сделать новый файл 201.dhcpd, следующего формата:
+	https://github.com/okovtun/PV_224/blob/master/Inheritance/FilesTask/201.dhcpd
 
 DONE:
 1. Сохранить группу в файл;		DONE
