@@ -1,4 +1,4 @@
-//Academy
+п»ї//Academy
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -11,6 +11,8 @@ using namespace std;
 
 class Human
 {
+	static const int FULL_NAME_LENGTH = 20;
+	static const int AGE_LENGTH = 5;
 	std::string last_name;
 	std::string first_name;
 	unsigned int age;
@@ -42,15 +44,15 @@ public:
 	//				Methods:
 	virtual std::ostream& print(std::ostream& os)const
 	{
-		return os << last_name << " " << first_name << " " << age << " лет.";
+		return os << last_name << " " << first_name << " " << age << " Р»РµС‚.";
 	}
 	virtual std::ofstream& print(std::ofstream& ofs)const
 	{
 		//ofs << last_name << " " << first_name << " " << age;
-		ofs.width(20);
+		ofs.width(FULL_NAME_LENGTH);
 		ofs << std::left;
 		ofs << last_name + " " + first_name;
-		ofs.width(5);
+		ofs.width(AGE_LENGTH);
 		ofs << std::right;
 		ofs << age;
 		return ofs;
@@ -70,12 +72,20 @@ std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
 {
 	return obj.print(ofs);
 }
+std::ifstream& operator>>(std::ifstream& ifs, Human& obj)
+{
+	return obj.scan(ifs);
+}
 
 #define STUDENT_TAKE_PARAMETERS	const std::string& specialty, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS	specialty, group, rating, attendance
 
 class Student :public Human
 {
+	static const int SPECIALTY_LENGTH = 25;
+	static const int GROUP_LENGTH = 10;
+	static const int RATING_LENGTH = 8;
+	static const int ATTENDANCE_LENGTH = 8;
 	std::string specialty;
 	std::string group;
 	double rating;
@@ -129,6 +139,7 @@ public:
 	}
 
 	//					Methods:
+	//type		  name (parameters)
 	std::ostream& print(std::ostream& os)const override
 	{
 		return Human::print(os) << ", " << specialty << " " << group << " " << rating << " " << attendance;
@@ -136,23 +147,29 @@ public:
 	std::ofstream& print(std::ofstream& ofs)const override
 	{
 		Human::print(ofs) << " ";
-		ofs.width(25);
+		ofs.width(SPECIALTY_LENGTH);
 		ofs << std::left;
 		ofs << specialty;
-		ofs.width(10);
+		ofs.width(GROUP_LENGTH);
 		ofs << group;
-		ofs.width(8);
+		ofs.width(RATING_LENGTH);
 		ofs << std::right;
 		ofs << rating;
-		ofs.width(8);
+		ofs.width(ATTENDANCE_LENGTH);
 		ofs << attendance;
 		return ofs;
 	}
 	std::ifstream& scan(std::ifstream& ifs)override
 	{
-		const int SIZE = 25;
+		Human::scan(ifs);
+		const int SIZE = SPECIALTY_LENGTH;
 		char buffer[SIZE]{};
-		ifs.read(buffer, SIZE);
+		ifs.read(buffer, SIZE - 1);
+		for (int i = SIZE - 2; buffer[i] == ' '; i--)buffer[i] = 0;
+		while (buffer[0] == ' ')
+		{
+			for (int i = 0; buffer[i]; i++)buffer[i] = buffer[i + 1];
+		}
 		specialty = buffer;
 		ifs >> group;
 		ifs >> rating;
@@ -161,8 +178,12 @@ public:
 	}
 };
 
+//2 + 3 * (8 - 3)^2
+
 class Teacher :public Human
 {
+	static const int SPECIALTY_LENGTH = 25;
+	static const int EXPERIENCE_LENGTH = 5;
 	std::string specialty;
 	unsigned int experience;
 public:
@@ -206,19 +227,26 @@ public:
 	std::ofstream& print(std::ofstream& ofs)const override
 	{
 		Human::print(ofs) << " ";
-		ofs.width(25);
+		ofs.width(SPECIALTY_LENGTH);
 		ofs << std::left;
 		ofs << specialty;
-		ofs.width(5);
+		ofs.width(EXPERIENCE_LENGTH);
 		ofs << right;
 		ofs << experience;
 		return ofs;
 	}
 	std::ifstream& scan(std::ifstream& ifs)override
 	{
-		const int SIZE = 25;
+		Human::scan(ifs);
+		const int SIZE = SPECIALTY_LENGTH;
 		char buffer[SIZE]{};
-		ifs.read(buffer, SIZE);
+		ifs.read(buffer, SIZE - 1);
+		for (int i = SIZE - 2; buffer[i] == ' '; i--)buffer[i] = 0;
+		while (buffer[0] == ' ')
+		{
+			for (int i = 0; buffer[i]; i++)buffer[i] = buffer[i + 1];
+		}
+		specialty = buffer;
 		ifs >> experience;
 		return ifs;
 	}
@@ -250,7 +278,7 @@ public:
 	//				Methods:
 	std::ostream& print(std::ostream& os)const override
 	{
-		return Student::print(os) << ", Тема дипломного проекта: " << topic;
+		return Student::print(os) << ", РўРµРјР° РґРёРїР»РѕРјРЅРѕРіРѕ РїСЂРѕРµРєС‚Р°: " << topic;
 	}
 	std::ofstream& print(std::ofstream& ofs)const override
 	{
@@ -259,14 +287,23 @@ public:
 	}
 	std::ifstream& scan(std::ifstream& ifs) override
 	{
+		Student::scan(ifs);
 		std::getline(ifs, topic);
 		return ifs;
 	}
 };
 
+Human* HumanFactory(const std::string& type)
+{
+	//Р­С‚РѕС‚ РјРµС‚РѕРґ СЃРѕР·РґР°РµС‚ РѕР±СЉРµРєС‚С‹ РІ РґРёРЅР°РјРёС‡РµСЃРєРѕР№ РїР°РјСЏС‚Рё:
+	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0);
+	if (type.find("Undergrad") != std::string::npos)return new Undergrad("", "", 0, "", "", 0, 0, "");
+	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
+}
+
 void print(Human* group[], const int n)
 {
-	//Specialisation - Уточнение (DownCast - преобразование сверху вниз)
+	//Specialisation - РЈС‚РѕС‡РЅРµРЅРёРµ (DownCast - РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ СЃРІРµСЂС…Сѓ РІРЅРёР·)
 	for (int i = 0; i < n; i++)
 	{
 		//group[i]->print();
@@ -292,7 +329,7 @@ void save(Human* group[], const int n, const std::string& filename)
 Human** load(const std::string& filename, int& n)
 {
 	std::ifstream fin(filename);
-	//1) Вычисляем размер массива:
+	//1) Р’С‹С‡РёСЃР»СЏРµРј СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР°:
 	if (fin.is_open())
 	{
 		std::string buffer;
@@ -302,16 +339,26 @@ Human** load(const std::string& filename, int& n)
 		}
 		n--;
 	}
-	//2) Выделяем память под массив:
+	//2) Р’С‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ РїРѕРґ РјР°СЃСЃРёРІ:
 	Human** group = new Human*[n] {};
 
-	//3) Возвращаемся в начало файла, для того чтобы прочитать строки, и загрузить их в объекты
+	//3) Р’РѕР·РІСЂР°С‰Р°РµРјСЃСЏ РІ РЅР°С‡Р°Р»Рѕ С„Р°Р№Р»Р°, РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РїСЂРѕС‡РёС‚Р°С‚СЊ СЃС‚СЂРѕРєРё, Рё Р·Р°РіСЂСѓР·РёС‚СЊ РёС… РІ РѕР±СЉРµРєС‚С‹
 	fin.clear();
 	fin.seekg(0);
 	//cout << fin.tellg() << endl;
 
-	//4) Загружаем объекты из файла:
-
+	//4) Р—Р°РіСЂСѓР¶Р°РµРј РѕР±СЉРµРєС‚С‹ РёР· С„Р°Р№Р»Р°:
+	if (fin.is_open())
+	{
+		std::string type;
+		for (int i = 0; i < n; i++)
+		{
+			std::getline(fin, type, ':');
+			//cout << buffer << endl;
+			group[i] = HumanFactory(type);
+			fin >> *group[i];
+		}
+	}
 
 	return group;
 }
@@ -337,17 +384,17 @@ void main()
 	hank.print();
 #endif // INHERITANCE
 
-	//Polymorphism (Многоформенность) - это способность объектов вести себя по разному в зависимости от обстоятельств.
+	//Polymorphism (РњРЅРѕРіРѕС„РѕСЂРјРµРЅРЅРѕСЃС‚СЊ) - СЌС‚Рѕ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ РѕР±СЉРµРєС‚РѕРІ РІРµСЃС‚Рё СЃРµР±СЏ РїРѕ СЂР°Р·РЅРѕРјСѓ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РѕР±СЃС‚РѕСЏС‚РµР»СЊСЃС‚РІ.
 	//Ad-hoc polymorphism
 
 	//Runtime polymorphism
 	/*
-		1. Pointers to base class - позволяют хранить адреса дочерних объектов;
-			Generalisation - Обобщение;
+		1. Pointers to base class - РїРѕР·РІРѕР»СЏСЋС‚ С…СЂР°РЅРёС‚СЊ Р°РґСЂРµСЃР° РґРѕС‡РµСЂРЅРёС… РѕР±СЉРµРєС‚РѕРІ;
+			Generalisation - РћР±РѕР±С‰РµРЅРёРµ;
 		2. Virtual methods;
 	*/
 
-	//Generalisation (UpCast - преобразование типов снизу вверх)
+	//Generalisation (UpCast - РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ С‚РёРїРѕРІ СЃРЅРёР·Сѓ РІРІРµСЂС…)
 	/*Human* group[] =
 	{
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95),
@@ -358,7 +405,7 @@ void main()
 		new Teacher("Einstein", "Albert", 143, "Astronomy", 120)
 	};*/
 
-	//Specialisation - Уточнение (DownCast - преобразование сверху вниз)
+	//Specialisation - РЈС‚РѕС‡РЅРµРЅРёРµ (DownCast - РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ СЃРІРµСЂС…Сѓ РІРЅРёР·)
 	/*for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		cout << *group[i] << endl;
@@ -371,6 +418,14 @@ void main()
 	int n = 0;
 	Human** group = load("group.txt", n);
 	print(group, n);
+
+	int a = 0;
+	{
+		//СЌС‚Рѕ Р±РµР·С‹РјСЏРЅРЅРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РёРјРµРЅ
+		int a = 2;
+	}
+	//Human::
+
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];

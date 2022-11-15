@@ -7,7 +7,7 @@ https://www.newenglishfile.ru/
 
 TODO:
 1. Сохранить группу в файл;		DONE
-2. Загрузить группу из файла;
+2. Загрузить группу из файла;	DONE
 
 DONE:
 1. Проработать dynamic_cast;
