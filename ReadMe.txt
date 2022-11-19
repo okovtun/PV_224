@@ -9,6 +9,17 @@ FreeBSD:
 https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubMPrO&index=62
 
 TODO:
+В иерархию геометрических фигур добавить Круг и Треугольник.
+https://learn.microsoft.com/en-us/windows/win32/gdi/filled-shapes
+https://learn.microsoft.com/en-us/windows/win32/gdi/about-ellipses
+https://learn.microsoft.com/en-us/windows/win32/gdi/about-polygons
+
+TODO:
+Реализовать иерархию классов геометрических фигур: Квадрат, прямоугольник, треугольник, круг......
+Для каждой фигуры необходимо выести ее первичные свойства (сторона квадрата, радиус круга....),
+и вторичные свойства, такие как периметр, площадь, а так же каждую фигуру нужно нарисовать.
+
+DONE:
 1. Из файла 201 RAW.txt сделать новый файл 201 ready.txt, в котором столбики с IP и MAC адресами поменяны местами
 	https://github.com/okovtun/PV_224/blob/master/Inheritance/FilesTask/201%20RAW.txt
 2. Из файла 201 RAW.txt сделать новый файл 201.dhcpd, следующего формата:
