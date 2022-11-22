@@ -9,6 +9,9 @@ FreeBSD:
 https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubMPrO&index=62
 
 TODO:
+В иерархии геометрических фигур расширить иерархию треугольников, Равнобедренным и прямоуголным треугольником.
+
+DONE:
 В иерархию геометрических фигур добавить Круг и Треугольник.
 https://learn.microsoft.com/en-us/windows/win32/gdi/filled-shapes
 https://learn.microsoft.com/en-us/windows/win32/gdi/about-ellipses
