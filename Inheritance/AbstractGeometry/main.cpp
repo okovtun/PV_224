@@ -1,10 +1,12 @@
 ﻿#define _USE_MATH_DEFINES
 #include<iostream>
 #include<Windows.h>
+#include<thread>
 using namespace std;
 
 namespace Geometry
 {
+	bool finish = false;
 	enum Color
 	{
 		red = 0x000000FF,
@@ -28,6 +30,7 @@ namespace Geometry
 		unsigned int start_y;
 		unsigned int line_width;
 		Color color;
+		std::thread draw_thread;
 	public:
 		unsigned int get_start_x()const
 		{
@@ -62,15 +65,30 @@ namespace Geometry
 			set_start_y(start_y);
 			set_line_width(line_width);
 		}
-		virtual ~Shape() {}
+		virtual ~Shape()
+		{
+			//if (draw_thread.joinable())draw_thread.join();
+		}
 		virtual double get_area()const = 0;
 		virtual double get_perimeter()const = 0;
 		virtual void draw()const = 0;
-		virtual void info()const
+		virtual void info()
 		{
 			cout << "Площадь фигуры: " << get_area() << endl;
 			cout << "Периметр фигуры:" << get_perimeter() << endl;
-			draw();
+			//draw();
+			//start_draw();
+			//draw_thread = std::thread(&Shape::start_draw, *this);
+		}
+		void start_draw()
+		{
+			while (!finish)
+			{
+				draw();
+				start_x++;
+				start_y++;
+				Sleep(500);
+			}
 		}
 	};
 
@@ -117,7 +135,7 @@ namespace Geometry
 			}
 			SetConsoleTextAttribute(hConsole, Color::console_default);
 		}
-		void info()const override
+		void info()override
 		{
 			cout << typeid(*this).name() << endl;
 			cout << "Длина стороны квадрата: " << side << endl;
@@ -155,7 +173,10 @@ namespace Geometry
 			set_width(width);
 			set_length(length);
 		}
-		~Rectangle() {}
+		~Rectangle()
+		{
+			if (draw_thread.joinable())draw_thread.join();
+		}
 		double get_area()const override
 		{
 			return width * length;
@@ -201,12 +222,13 @@ namespace Geometry
 			//Освобождаем контекст устройства:
 			ReleaseDC(hwnd, hdc);
 		}
-		void info()const override
+		void info()override
 		{
 			cout << typeid(*this).name() << endl;
 			cout << "Ширина: " << width << endl;
 			cout << "Длина:  " << length << endl;
 			Shape::info();
+			this->draw_thread = std::thread(&Shape::start_draw, this);
 		}
 	};
 	class Circle :public Shape
@@ -228,7 +250,10 @@ namespace Geometry
 		{
 			set_radius(radius);
 		}
-		~Circle() {}
+		~Circle()
+		{
+			if (draw_thread.joinable())draw_thread.join();
+		}
 		double get_area()const override
 		{
 			return M_PI * radius*radius;
@@ -241,7 +266,7 @@ namespace Geometry
 		{
 			HWND hwnd = GetConsoleWindow();
 			HDC hdc = GetDC(hwnd);
-			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color - 0x00555555);
 			HBRUSH hBrush = CreateSolidBrush(color);
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
@@ -252,11 +277,19 @@ namespace Geometry
 			DeleteObject(hPen);
 			ReleaseDC(hwnd, hdc);
 		}
-		void info()const
+		/*void start_draw()const
+		{
+			while (true)
+			{
+				draw();
+			}
+		}*/
+		void info() override
 		{
 			cout << typeid(*this).name() << endl;
 			cout << "Radius:\t" << radius << endl;
 			Shape::info();
+			this->draw_thread = std::thread(&Shape::start_draw, this);
 		}
 	};
 	class Triangle :public Shape
@@ -265,7 +298,7 @@ namespace Geometry
 		Triangle(unsigned int start_x, unsigned int start_y, unsigned int line_width, Color color)
 			:Shape(start_x, start_y, line_width, color) {}
 		virtual double get_height()const = 0;
-		void info()const
+		void info()
 		{
 			cout << "Height:\t" << get_height() << endl;
 			Shape::info();
@@ -290,7 +323,10 @@ namespace Geometry
 		{
 			set_side(side);
 		}
-		~EquilateralTriangle() {}
+		~EquilateralTriangle()
+		{
+			if (draw_thread.joinable())draw_thread.join();
+		}
 		double get_height()const override
 		{
 			return 2 * get_area() / side;
@@ -308,15 +344,16 @@ namespace Geometry
 			HWND hwnd = GetConsoleWindow();
 			HDC hdc = GetDC(hwnd);
 			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
-			HBRUSH hBrush = CreateSolidBrush(color);
+
+			HBRUSH hBrush = CreateSolidBrush(color-0x00555555);
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			POINT vert[] = 
+			POINT vert[] =
 			{
-				{start_x, start_y+side},
-				{start_x+side, start_y+side},
-				{start_x+side/2, start_y+side-get_height()}
+				{start_x, start_y + side},
+				{start_x + side, start_y + side},
+				{start_x + side / 2, start_y + side - get_height()}
 			};
 			::Polygon(hdc, vert, 3);
 
@@ -324,11 +361,19 @@ namespace Geometry
 			DeleteObject(hPen);
 			ReleaseDC(hwnd, hdc);
 		}
-		void info()const
+		/*void start_draw()const
+		{
+			while (true)
+			{
+				draw();
+			}
+		}*/
+		void info()
 		{
 			cout << typeid(*this).name() << endl;
 			cout << "Side:\t" << side << endl;
 			Triangle::info();
+			this->draw_thread = std::thread(&Shape::start_draw, this);
 		}
 	};
 }
@@ -338,9 +383,9 @@ void main()
 	setlocale(LC_ALL, "");
 	//Shape shape;
 	Geometry::Square square(8, 100, 100, 11, Geometry::Color::console_red);
-	square.info();
+	//square.info();
 
-	Geometry::Rectangle rect(150, 70, 300, 100, 11, Geometry::Color::grey);
+	Geometry::Rectangle rect(150, 70, 300, 100, 11, Geometry::Color::red);
 	rect.info();
 
 	Geometry::Circle circle(100, 500, 100, 11, Geometry::Color::yellow);
@@ -348,4 +393,11 @@ void main()
 
 	Geometry::EquilateralTriangle e_try(170, 350, 200, 8, Geometry::Color::green);
 	e_try.info();
+
+	/*std::thread e_try_thread(&Geometry::EquilateralTriangle::start_draw, e_try);
+	std::thread circle_thread(&Geometry::Circle::start_draw, circle);
+	circle_thread.join();
+	e_try_thread.join();*/
+	cin.get();
+	Geometry::finish = true;
 }
