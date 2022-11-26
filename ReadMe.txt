@@ -14,7 +14,9 @@ https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubM
 
 TODO:
 1. В класс ForwardList добавить метод ??? erase(???), который удаляем элемент по указанному индексу;
-2. 
+2. В классе ForwardList написать деструктор таким образом, чтобы он удалял все элементы списка;
+3. Проверочный код должен заработать:
+	https://github.com/okovtun/PV_224/blob/96b5d54766ae6d15e4b92493129c7af371a2bcea/DataContainers/ForwardList/main.cpp#L184
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////			INHERITANCE AND POLYMORPHISM			////////////////////
