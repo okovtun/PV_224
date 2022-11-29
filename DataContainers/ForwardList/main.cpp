@@ -24,6 +24,7 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
+	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
 unsigned int Element::count = 0;	//Статическую переменную можно проинициализировать только за классом
@@ -40,34 +41,77 @@ public:
 		//Если Голова указывает на 0, то список пуст
 		cout << "LConstructor:\t" << this << endl;
 	}
+	ForwardList(const ForwardList& other):ForwardList()
+	{
+		/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);*/
+		*this = other;	//Из конструктора копирования вызываем оператор присваивания
+		cout << "CopyConstructor:\t" << this << endl;
+	}
+	ForwardList(ForwardList&& other) :ForwardList()
+	{
+		*this = std::move(other);	//Функция std::move() вызывает MoveAssignment
+		cout << "MoveConstructor:\t" << this << endl;
+	}
 	~ForwardList()
 	{
+		while (Head)pop_front();
 		cout << "LDestructor:\t" << this << endl;
+	}
+
+	//				Operators:
+	ForwardList& operator=(const ForwardList& other)
+	{
+		int a = 2;
+		int b = 3;
+		a = b;
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		//Deep copy:
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	ForwardList& operator=(ForwardList&& other)
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		//Shallow copy:
+		this->Head = other.Head;
+		this->size = other.size;
+		other.Head = nullptr;
+		other.size = 0;
+		cout << "MoveAssignment:\t" << this << endl;
+		return *this;
 	}
 
 	//				Adding Elements:
 	void push_front(int Data)
 	{
-		//1) Создаем новый элемент:
-		Element* New = new Element(Data);
-		//2) Пристыковываем новый элемент к началу списка:
-		New->pNext = Head;
-		//3) Переводим Голову на новый элемент:
-		Head = New;
+		////1) Создаем новый элемент:
+		//Element* New = new Element(Data);
+		////2) Пристыковываем новый элемент к началу списка:
+		//New->pNext = Head;
+		////3) Переводим Голову на новый элемент:
+		//Head = New;
+
+		Head = new Element(Data, Head);
+
 		size++;
 	}
 	void push_back(int Data)
 	{
 		if (Head == nullptr)return push_front(Data);
 		//1) Создаем новый элемент:
-		Element* New = new Element(Data);
+		//Element* New = new Element(Data);
 		//2) Доходим до последнего элемента списка:
 		Element* Temp = Head;
 		while (Temp->pNext)Temp = Temp->pNext;
 		//Теперь Итератор указывает на последний элемент списка,
 		//и к нему можно пристыковать новый элемент.
 		//3) Пристегиваем к последнему элементу списка новый элемент:
-		Temp->pNext = New;
+		Temp->pNext = new Element(Data);
 		size++;
 	}
 	void insert(int Index, int Data)
@@ -79,7 +123,7 @@ public:
 			return;
 		}
 		//1) Создаем новый элемент:
-		Element* New = new Element(Data);
+		//Element* New = new Element(Data);
 
 		//2) Доходим до нужного элемента:
 		Element* Temp = Head;
@@ -87,8 +131,10 @@ public:
 			/*if(Temp->pNext)*/Temp = Temp->pNext;
 		
 		//3) Включаем новый элемент в список:
-		New->pNext = Temp->pNext;
-		Temp->pNext = New;
+		//New->pNext = Temp->pNext;
+		//Temp->pNext = New;
+		Temp->pNext = new Element(Data, Temp->pNext);
+
 		size++;
 	}
 
@@ -120,22 +166,36 @@ public:
 	//				Methods:
 	void print()const
 	{
-		Element* Temp = Head;	//Temp - это итератор.
+		cout << "Head:\t" << Head << endl;
+		/*Element* Temp = Head;	//Temp - это итератор.
 		//Итератор - это указатель, при помощи которого 
 		//можно получить доступ к элементам структуры данных.
-		cout << "Head:\t" << Head << endl;
 		while (Temp)
 		{
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 			Temp = Temp->pNext;	//Переход на следующий элемент
-		}
+		}*/
+		//for(start	;	stop	;	step) group-of-statements;
+		for(Element* Temp = Head; Temp; Temp=Temp->pNext)
+			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Количество элементов списка:\t  " << size << endl;
 		cout << "Общее количество элементов списка:" << Element::count << endl;
 	}
+	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList cat = left;	//CopyConstructor
+	for (Element* Temp = right.Head; Temp; Temp = Temp->pNext)
+		cat.push_back(Temp->Data);
+	return cat;
+}
+
 //#define BASE_CHECK
-#define COUNT_CHECK
+//#define COUNT_CHECK
+//#define RANGE_BASE_FOR_ARRAY
+#define RANGE_BASED_FOR_LIST
 
 void main()
 {
@@ -144,10 +204,10 @@ void main()
 	int n;
 	cout << "Введите размер списка: "; cin >> n;
 	ForwardList list;
-	list.push_back(1024);
+	/*list.push_back(1024);
 	list.print();
 	list.pop_back();
-	list.print();
+	list.print();*/
 	for (int i = 0; i < n; i++)
 	{
 		//list.push_front(rand() % 100);
@@ -181,10 +241,36 @@ void main()
 	list1.print();
 	list2.print();
 
+	list1 = list1;
 	ForwardList list3 = list1 + list2;
 	list3.print();
 
 #endif // COUNT_CHECK
 
+#ifdef RANGE_BASE_FOR_ARRAY
+	int arr[] = { 3, 5, 8, 13, 21 };
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		cout << arr[i] << "\t";
+	}
+	cout << endl;
+
+	//range-based for (for для диапазона, т.е., для контейнера)
+	for (int i : arr)
+	{
+		//https://legacy.cplusplus.com/doc/tutorial/control/#:~:text=equal%20to%2050.-,Range%2Dbased%20for%20loop,-The%20for%2Dloop
+		cout << i << "\t";
+	}
+	cout << endl;
+#endif // RANGE_BASE_FOR_ARRAY
+
+#ifdef RANGE_BASED_FOR_LIST
+	ForwardList list = { 3,5,8,13,21 };
+	for (int i : list)
+	{
+		cout << i << "\t";
+	}
+	cout << endl;
+#endif // RANGE_BASED_FOR_LIST
 
 }
