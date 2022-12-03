@@ -1,5 +1,6 @@
 ﻿//ForwardList
 #include<iostream>
+#include<ctime>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -16,18 +17,62 @@ public:
 	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		count++;
+#ifdef DEBUG
 		cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	~Element()
 	{
 		count--;
+#ifdef DEBUG
 		cout << "EDestructor:\t" << this << endl;
+#endif // DEBUG
 	}
+	friend class Iterator;
 	friend class ForwardList;
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
 unsigned int Element::count = 0;	//Статическую переменную можно проинициализировать только за классом
+
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp) :Temp(Temp)
+	{
+		cout << "ItConstructor:\t" << this << endl;
+	}
+	~Iterator()
+	{
+		cout << "ItDestructor:\t" << this << endl;
+	}
+
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+
+	bool operator==(const Iterator& other)const
+	{
+		return this->Temp == other.Temp;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+
+	const int& operator*()const
+	{
+		return Temp->Data;
+	}
+	int& operator*()
+	{
+		return Temp->Data;
+	}
+};
 
 class ForwardList
 {
@@ -35,23 +80,58 @@ class ForwardList
 	//Голова является точкой входа в список
 	unsigned int size;
 public:
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+	//					Constructors
 	ForwardList() :Head(nullptr), size(0)
 	{
 		//Конструктор по умолчанию создает пустой список.
 		//Если Голова указывает на 0, то список пуст
 		cout << "LConstructor:\t" << this << endl;
 	}
-	ForwardList(const ForwardList& other):ForwardList()
+	ForwardList(const std::initializer_list<int>& il) :ForwardList()
+	{
+		/*
+		-----------------------------------------------
+		initializer_list - это контейнер.
+		Контейнер - это объект, который организует хранение других объектов в памяти.
+		У любого контейнера есть методы
+		begin() - возвращает ИТЕРАТОР на начало контейнера.
+		end()   - возвращает ИТЕРАТОР на конец контейнера.
+		-----------------------------------------------
+		int*		указатель
+		const int*	константный указатель
+		const* int  указатель на константу
+		int const*  указатель на константу
+		const int const* константный указатель на константу
+		https://legacy.cplusplus.com/doc/tutorial/pointers/#:~:text=legibility%20to%20expressions.-,Pointers%20and%20const,-Pointers%20can%20be
+		-----------------------------------------------
+		*/
+		cout << typeid(il.begin()).name() << endl;
+		for (int const* it = il.begin(); it != il.end(); it++)
+		{
+			push_back(*it);
+		}
+	}
+	ForwardList(const ForwardList& other) :ForwardList()
 	{
 		/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
 			push_back(Temp->Data);*/
 		*this = other;	//Из конструктора копирования вызываем оператор присваивания
 		cout << "CopyConstructor:\t" << this << endl;
+
 	}
 	ForwardList(ForwardList&& other) :ForwardList()
 	{
 		*this = std::move(other);	//Функция std::move() вызывает MoveAssignment
 		cout << "MoveConstructor:\t" << this << endl;
+
 	}
 	~ForwardList()
 	{
@@ -69,7 +149,8 @@ public:
 		while (Head)pop_front();
 		//Deep copy:
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
-			push_back(Temp->Data);
+			push_front(Temp->Data);
+		reverse();
 		cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
@@ -129,7 +210,7 @@ public:
 		Element* Temp = Head;
 		for (int i = 0; i < Index - 1; i++)
 			/*if(Temp->pNext)*/Temp = Temp->pNext;
-		
+
 		//3) Включаем новый элемент в список:
 		//New->pNext = Temp->pNext;
 		//Temp->pNext = New;
@@ -164,11 +245,23 @@ public:
 	}
 
 	//				Methods:
+	void reverse()
+	{
+		ForwardList reverse;
+		while (Head)
+		{
+			reverse.push_front(Head->Data);
+			pop_front();
+		}
+		this->Head = reverse.Head;
+		this->size = reverse.size;
+		reverse.Head = nullptr;
+	}
 	void print()const
 	{
 		cout << "Head:\t" << Head << endl;
 		/*Element* Temp = Head;	//Temp - это итератор.
-		//Итератор - это указатель, при помощи которого 
+		//Итератор - это указатель, при помощи которого
 		//можно получить доступ к элементам структуры данных.
 		while (Temp)
 		{
@@ -176,7 +269,7 @@ public:
 			Temp = Temp->pNext;	//Переход на следующий элемент
 		}*/
 		//for(start	;	stop	;	step) group-of-statements;
-		for(Element* Temp = Head; Temp; Temp=Temp->pNext)
+		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Количество элементов списка:\t  " << size << endl;
 		cout << "Общее количество элементов списка:" << Element::count << endl;
@@ -196,6 +289,7 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 //#define COUNT_CHECK
 //#define RANGE_BASE_FOR_ARRAY
 #define RANGE_BASED_FOR_LIST
+//#define PREFORMANCE_CHECK
 
 void main()
 {
@@ -266,11 +360,35 @@ void main()
 
 #ifdef RANGE_BASED_FOR_LIST
 	ForwardList list = { 3,5,8,13,21 };
+	list.print();
 	for (int i : list)
 	{
 		cout << i << "\t";
 	}
 	cout << endl;
 #endif // RANGE_BASED_FOR_LIST
+
+#ifdef PREFORMANCE_CHECK
+	int n;
+	cout << "Введите размер списка: "; cin >> n;
+	ForwardList list;
+	cout << "List created, loading data..." << endl;
+	time_t start = time(NULL);
+	for (int i = 0; i < n; i++)
+	{
+		list.push_front(rand() % 100);
+	}
+	time_t end = time(NULL);
+	cout << "Data load complete" << endl;
+	cout << "Spent time: " << end - start << endl;
+	//list.print();
+	cout << "Start copying" << endl;
+	start = time(NULL);
+	ForwardList list2 = list;
+	end = time(NULL);
+	cout << "End copying" << endl;
+	cout << "Spent time: " << end - start << endl;
+	//list2.print();  
+#endif // PREFORMANCE_CHECK
 
 }
