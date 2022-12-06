@@ -13,6 +13,17 @@ https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubM
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 TODO:
+1. В класс List добавить метод ??? erase(???);
+2. Написать operator+ и MoveMethods;
+3. Проверочный код должен заработать:
+	List list = { 3, 5, 8, 13, 21 };
+	for(int i:list)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+
+DONE:
 В Solution DataContainers добавить проект List2 и в нем реализовать класс List, 
 описывающий двусвязный список.
 
