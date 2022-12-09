@@ -13,6 +13,10 @@ https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubM
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 TODO:
+В ветке templated_list_2 шаблонизировать класс List
+https://legacy.cplusplus.com/doc/tutorial/templates/#:~:text=Edit%20%26%20Run-,Class%20templates,-Just%20like%20we
+
+DONE:
 1. В класс List добавить метод ??? erase(???);
 2. Написать operator+ и MoveMethods;
 3. Проверочный код должен заработать:
