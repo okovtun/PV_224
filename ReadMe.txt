@@ -13,6 +13,23 @@ https://www.youtube.com/watch?v=AY8ZDMCinCQ&list=PLeqyOOqxeiINK1krBBk-nu_z52oubM
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 TODO:
+1. В класс Tree добавить следующие методы:
+	??? minValue(???);
+	??? maxValue(???);
+	??? count(???);		//возвращает количество элементов дерева
+	??? sum(???);
+	??? avg(???);
+	??? depth(???);		//возвращает глубину дерева
+	??? erase(???);		//удаление элемента по значению
+2. Обеспечить вызов всех методов без необходимости передачи корня дерева:
+	Tree tree;
+	for (int i = 0; i < n; i++)
+	{
+		tree.insert(rand() % 100);
+	}
+	tree.print();
+
+DONE:
 В ветке templated_list_2 шаблонизировать класс List
 https://legacy.cplusplus.com/doc/tutorial/templates/#:~:text=Edit%20%26%20Run-,Class%20templates,-Just%20like%20we
 
