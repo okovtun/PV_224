@@ -33,6 +33,7 @@ https://legacy.cplusplus.com/reference/stl/
 template<typename T>void print(const std::vector<T>& vec);
 
 //#define STL_ARRAY
+//#define MY_EXCEPTION
 #define STL_VECTOR
 
 void main()
@@ -49,7 +50,19 @@ void main()
 	cout << endl;
 #endif // STL_ARRAY
 
+#ifdef MY_EXCEPTION
+	try
+	{
+		throw std::exception("My test exception");
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << endl;
+	}
+#endif // MY_EXCEPTION
+
 #ifdef STL_VECTOR
+
 	//vector - это контейнер, который хранит данные в виде динамического массива.
 	std::vector<int> vec = { 0,1,1,2,3,5,8,13,21,34 };
 	//std::vector<int> vec(100000);
@@ -59,7 +72,7 @@ void main()
 	print(vec);
 	/*
 	capacity - size = количество элементов, которые могут быть добавлены в вектор без переопределения памяти.
-	если при добавлении элемента capacity == size, то требуется переопределение памяти, 
+	если при добавлении элемента capacity == size, то требуется переопределение памяти,
 	и Вектор выделит в полтора раза больше памяти, чем его фактический размер.
 	resize() - принудительно задает размер вектора как в бОльшую, так и в меньшую сторону.
 	shrink_to_fit() - урезает вместительность вектора до фактического размера.
@@ -72,6 +85,45 @@ void main()
 	//print(vec);
 
 	vec.reserve(12);
+	print(vec);
+
+	try
+	{
+		for (int i = 0; i < vec.capacity(); i++)
+		{
+			//cout << vec[i] << tab;
+			cout << vec.at(i) << tab;
+		}
+		cout << endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << endl;
+	}
+
+	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;
+	for (std::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); ++it)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;
+
+	int index;
+	int number;
+	int value;
+	do
+	{
+		cout << "Введите индекс добавляемого элемента: "; cin >> index;
+		if (index >= vec.size())cout << "Out of range" << endl;
+	} while (index >= vec.size());
+	cout << "Введите количество добавляемых значений: "; cin >> number;
+	cout << "Введите значение добавляемого элемента: "; cin >> value;
+
+	vec.insert(vec.begin() + index, number, value);
 	print(vec);
 
 #endif // STL_VECTOR
