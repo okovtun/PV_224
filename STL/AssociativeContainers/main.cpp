@@ -74,4 +74,14 @@ void main()
 		cout << endl;
 	}
 	cout << "\n-----------------------------------------------------------\n";
+	for (std::pair<std::string, std::list<std::string>> i : dictionary)
+	{
+		cout << i.first << ":\t";
+		for (std::string j : i.second)
+		{
+			cout << j << ", ";
+		}
+		cout << "\b\b;";
+		cout << endl;
+	}
 }
