@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL", "STL\STL.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyExceptions", "MyExceptions\MyExceptions.vcxproj", "{51320720-7AC6-4848-A354-611E2714AECB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssociativeContainers", "AssociativeContainers\AssociativeContainers.vcxproj", "{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{51320720-7AC6-4848-A354-611E2714AECB}.Release|x64.Build.0 = Release|x64
 		{51320720-7AC6-4848-A354-611E2714AECB}.Release|x86.ActiveCfg = Release|Win32
 		{51320720-7AC6-4848-A354-611E2714AECB}.Release|x86.Build.0 = Release|Win32
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Debug|x64.ActiveCfg = Debug|x64
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Debug|x64.Build.0 = Debug|x64
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Debug|x86.ActiveCfg = Debug|Win32
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Debug|x86.Build.0 = Debug|Win32
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Release|x64.ActiveCfg = Release|x64
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Release|x64.Build.0 = Release|x64
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Release|x86.ActiveCfg = Release|Win32
+		{9424A1AB-EB88-4B59-A1E2-53FDC4DE3DB8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
