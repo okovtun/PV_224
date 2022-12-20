@@ -10,7 +10,8 @@ using std::endl;
 #define tab "\t"
 
 //#define STL_SET
-//#define STL_MAP
+#define STL_MAP
+//#define DICTIONARY
 
 void main()
 {
@@ -38,7 +39,7 @@ void main()
 
 #ifdef STL_MAP
 	//map - это контейнер, каждый элемент которого содержит "пару" - "ключ-значение" ("key-value")
-	std::multimap<int, std::string> week =
+	std::map<int, std::string> week =
 	{
 		std::pair<int, std::string>(0, "Sunday"),
 		std::pair<int, std::string>(1, "Monday"),
@@ -54,8 +55,14 @@ void main()
 	{
 		cout << it->first << tab << it->second << endl;
 	}
+	cout << week[10] << endl;
+	for (std::pair<int, std::string> i : week)
+	{
+		cout << i.first << tab << i.second << endl;
+	}
 #endif // STL_MAP
 
+#ifdef DICTIONARY
 	std::map<std::string, std::list<std::string>> dictionary =
 	{
 		std::pair<std::string, std::list<std::string>>("squad", {"группа", "команда", "отделение"}),
@@ -84,4 +91,6 @@ void main()
 		cout << "\b\b;";
 		cout << endl;
 	}
+#endif // DICTIONARY
+
 }
