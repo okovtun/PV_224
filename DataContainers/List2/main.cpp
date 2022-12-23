@@ -305,7 +305,7 @@ public:
 	void print()const
 	{
 		cout << "Голова списка: " << Head << endl;
-		for (Element* Temp = Head; Temp; Temp = Temp->pNext)
+		for (Element* Temp = Head; Temp; /*Temp = Temp->pNext*/Temp++)
 			cout << Temp->pPrev << tab << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 		cout << "Хвост списка: " << Tail << endl;
 		cout << "Количество элементов списка: " << size << endl;
@@ -380,6 +380,7 @@ void main()
 #endif // CONSTRUCTORS_CHECK
 
 	List list = { 3, 5, 8, 13, 21 };
+	list.print();
 	for (int i : list)
 	{
 		cout << i << tab;
