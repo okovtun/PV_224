@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -10,6 +11,8 @@ using std::endl;
 
 #define tab "\t"
 #define delimiter "\n--------------------------------------------------------------------\n"
+
+#define STD_STRING_PARSE
 
 const std::map<int, std::string> violation =
 {
@@ -105,23 +108,43 @@ void load(std::map<std::string, std::list<Crime>>& base, const std::string& file
 			std::string all_crimes;
 			std::getline(fin, all_crimes);
 			all_crimes.erase(0, 1);	//удал€ем табул€цию из строки
-			size_t start = 0;
-			size_t end = 0;
-			for (
-				start = 0, end = all_crimes.find(',');
-				/*end != std::string::npos*/;
-				start = end + 1, end = all_crimes.find(',', end + 1)
-				)
+			//https://legacy.cplusplus.com/reference/string/string/erase/
+#ifdef STD_STRING_PARSE
+			//for (int start = 0, end = all_crimes.find(',');	/*end != std::string::npos*/;	start = end + 1, end = all_crimes.find(',', end + 1)
+			for (int start = 0, end = all_crimes.find(',');	;start = end + 1, end = all_crimes.find(',', end + 1))
 			{
+				//https://legacy.cplusplus.com/reference/string/string/find/
+				
 				std::string place = all_crimes.substr(start, end - start);
+				//https://legacy.cplusplus.com/reference/string/string/substr/
 				if (place[place.size() - 1] == ';')place[place.size() - 1] = 0;
-				int id = std::stoi(place);
+				int id = std::stoi(place);	//https://legacy.cplusplus.com/reference/string/stoi/?kw=stoi
 				place[0] = ' ';	//удал€ем цифру в начале строки
 				place.erase(0, place.find_first_not_of(' '));
-				Crime crime(id, place);
-				base[licence_plate].push_back(crime);
+				//https://legacy.cplusplus.com/reference/string/string/erase/
+				base[licence_plate].push_back(Crime(id, place));
 				if (end == std::string::npos)break;
 			}
+			
+#endif // STD_STRING_PARSE
+#ifndef STD_STRING_PARSE
+			int size = all_crimes.size() + 1;
+			char* sz_buffer = new char[size] {};
+			strcpy_s(sz_buffer, size, all_crimes.c_str());
+
+			char delimiters[] = ",;";
+			for (char* pch = strtok(sz_buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+			{
+				int id = std::atoi(pch);
+				pch[0] = ' ';
+				while (pch[0] == ' ')
+					for (int i = 0; pch[i]; i++)pch[i] = pch[i + 1];
+				Crime crime(id, pch);
+				base[licence_plate].push_back(crime);
+			}
+			delete[] sz_buffer;
+#endif // !STD_STRING_PARSE
+
 		}
 		fin.close();
 	}
