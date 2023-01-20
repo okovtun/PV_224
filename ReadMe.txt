@@ -19,6 +19,9 @@ http://www.rw-designer.com/cursor-set/starcraft-original
 https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexa
 
 TODO:
+К кнопкам привязать графические значки.
+
+DONE:
 В Solution WinAPI добавить проект ListBox, и реализовать в нем такой же функционал как в ComboBox,
 только с использованием инструмента ListBox.
 
