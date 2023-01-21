@@ -1,3 +1,4 @@
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<string>
 #include<ctime>
@@ -5,7 +6,7 @@ using namespace std;
 
 class Singleton
 {
-	static Singleton* instance;
+	//static Singleton* instance;
 	string last_name;
 	string first_name;
 	tm birth_date;
@@ -42,58 +43,73 @@ public:
 	}
 	~Singleton()
 	{
-		delete instance;
+		//delete instance;
 		cout << "Destructor:\t" << this << endl;
 	}
 
-	static Singleton* getInstance()
+	static Singleton& getInstance()
 	{
-		if (instance == nullptr)instance = new Singleton();
+		//if (instance == nullptr)instance = new Singleton();
+		static int i = 0;
+		cout << i++ << endl;
+		static Singleton instance;
 		return instance;
 	}
 
 	void print()const
 	{
-		cout << last_name << " " << first_name << endl;
+		time_t timer;	//Хранит время в формате "Timestamp" (Timestamp это количество миллисекунд от даты 01.01.1970)
+		time(&timer);	//Получаем текущее время
+		tm* current_time = localtime(&timer);	//Сохраняем текущее время в "человеческом" формате
+		size_t age = current_time->tm_year - birth_date.tm_year;
+		if (current_time->tm_mon < birth_date.tm_mon)age--;
+		if (
+			current_time->tm_mon == birth_date.tm_mon &&
+			current_time->tm_mday < birth_date.tm_mday
+			)age--;
+		//cout << this << last_name << " " << first_name << " " << age << " лет." << endl;
+		printf("%p: %s %s %d лет.\n", this, last_name.c_str(), first_name.c_str(), age);
 	}
 };
 
-Singleton* Singleton::instance = nullptr;
+//Singleton* Singleton::instance = nullptr;
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
 	/*Singleton* director = Singleton::getInstance();
-	director->set_first_name("�������");
-	director->set_last_name("�������");
+	director->set_first_name("Василий");
+	director->set_last_name("Тупенко");
 	director->set_birth_date(1990, 04, 01);
 	director->print();*/
 
-	Singleton::getInstance()->set_last_name("�����");
-	Singleton::getInstance()->set_first_name("�������");
-	Singleton::getInstance()->set_birth_date(1990, 04, 1);
-	Singleton::getInstance()->print();
-	Singleton::getInstance()->~Singleton();
+	Singleton::getInstance().set_last_name("Дурко");
+	Singleton::getInstance().set_first_name("Виталий");
+	Singleton::getInstance().set_birth_date(1990, 04, 1);
+	Singleton::getInstance().print();
+
+	Singleton* director;
+	director->getInstance().print();
 }
 
 /*
 1. Creational patterns:
-	-Singleton - ��������
-	-Factory - �������
-	-Abstract-factory - ����������� �������
-	-Builder - ���������
+	-Singleton - Одиночка
+	-Factory - Фабрика
+	-Abstract-factory - абстрактная фабрика
+	-Builder - строитель
 	-Prototype
 
 2. Behavioural patterns:
 	-Command
 	-Iterator
-	-Mediator - ���������
-	-Observer - �����������
-	-Memento - ������
-	-State - ���������
+	-Mediator - посредник
+	-Observer - наблюдатель
+	-Memento - снимок
+	-State - состояние
 	-Strategy
-	-Visitor - ����������
+	-Visitor - посетитель
 	-Chain-of-responsibility
 	-Template-method
 
