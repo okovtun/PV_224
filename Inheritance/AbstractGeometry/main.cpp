@@ -1,7 +1,11 @@
 ﻿#define _USE_MATH_DEFINES
 #include<iostream>
+#include<ctime>
 #include<Windows.h>
 using namespace std;
+
+#define RAND rand()%500
+#define COLOR RGB(rand(), rand(), rand())
 
 namespace Geometry
 {
@@ -312,11 +316,11 @@ namespace Geometry
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			POINT vert[] = 
+			POINT vert[] =
 			{
-				{start_x, start_y+side},
-				{start_x+side, start_y+side},
-				{start_x+side/2, start_y+side-get_height()}
+				{start_x, start_y + side},
+				{start_x + side, start_y + side},
+				{start_x + side / 2, start_y + side - get_height()}
 			};
 			::Polygon(hdc, vert, 3);
 
@@ -331,13 +335,29 @@ namespace Geometry
 			Triangle::info();
 		}
 	};
+
+	Shape* Factory(int type)
+	{
+		switch (type)
+		{
+		//case 1: return new Square(rand(), rand(), rand(), rand(), (Color)rand()); break;
+		case 0: return new Circle(RAND, rand()%500, rand()%500, RAND, (Color)COLOR);				break;
+		case 1: return new Rectangle(RAND, RAND, rand() % 500, rand() % 500, RAND, (Color)COLOR);	break;
+		case 2: return new EquilateralTriangle(RAND, rand() % 500, rand() % 500, RAND, (Color)COLOR);break;
+		}
+	}
 }
 
 void main()
 {
 	setlocale(LC_ALL, "");
+
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coord;
+	SetConsoleDisplayMode(hConsole, CONSOLE_FULLSCREEN_MODE, &coord);
+
 	//Shape shape;
-	Geometry::Square square(8, 100, 100, 11, Geometry::Color::console_red);
+	/*Geometry::Square square(8, 100, 100, 11, Geometry::Color::console_red);
 	square.info();
 
 	Geometry::Rectangle rect(150, 70, 300, 100, 11, Geometry::Color::grey);
@@ -347,5 +367,26 @@ void main()
 	circle.info();
 
 	Geometry::EquilateralTriangle e_try(170, 350, 200, 8, Geometry::Color::green);
-	e_try.info();
+	e_try.info();*/
+
+	srand(time(NULL));	//задает начальную точку для генерации случайных чисел.
+						//В качестве точки отсчет берется текущее время.
+
+	const int n = 10;
+	Geometry::Shape* shape[n];
+	for (int i = 0; i < n; i++)
+	{
+		shape[i] = Geometry::Factory(rand() % 3);
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		shape[i]->draw();
+		Sleep(100);
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		delete shape[i];
+	}
 }
