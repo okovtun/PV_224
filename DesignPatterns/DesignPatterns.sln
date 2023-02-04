@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DesignPatterns", "DesignPat
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Builder", "Builder\Builder.vcxproj", "{BF1B88A0-B3B5-44D6-A739-0E7363066442}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Prototype", "Prototype\Prototype.vcxproj", "{23BFC1EB-553A-4F17-9800-341983A0E220}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{BF1B88A0-B3B5-44D6-A739-0E7363066442}.Release|x64.Build.0 = Release|x64
 		{BF1B88A0-B3B5-44D6-A739-0E7363066442}.Release|x86.ActiveCfg = Release|Win32
 		{BF1B88A0-B3B5-44D6-A739-0E7363066442}.Release|x86.Build.0 = Release|Win32
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Debug|x64.ActiveCfg = Debug|x64
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Debug|x64.Build.0 = Debug|x64
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Debug|x86.ActiveCfg = Debug|Win32
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Debug|x86.Build.0 = Debug|Win32
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Release|x64.ActiveCfg = Release|x64
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Release|x64.Build.0 = Release|x64
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Release|x86.ActiveCfg = Release|Win32
+		{23BFC1EB-553A-4F17-9800-341983A0E220}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
