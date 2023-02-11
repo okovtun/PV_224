@@ -80,6 +80,10 @@ class ForwardList
 	//Голова является точкой входа в список
 	unsigned int size;
 public:
+	int get_size()const
+	{
+		return size;
+	}
 	Iterator begin()
 	{
 		return Head;
@@ -94,6 +98,10 @@ public:
 		//Конструктор по умолчанию создает пустой список.
 		//Если Голова указывает на 0, то список пуст
 		cout << "LConstructor:\t" << this << endl;
+	}
+	explicit ForwardList(int size):ForwardList()
+	{
+		while (size--)push_front(0);
 	}
 	ForwardList(const std::initializer_list<int>& il) :ForwardList()
 	{
@@ -165,6 +173,12 @@ public:
 		other.size = 0;
 		cout << "MoveAssignment:\t" << this << endl;
 		return *this;
+	}
+	int& operator[](int index)
+	{
+		Element* Temp = Head;
+		for (int i = 0; i < index; i++)Temp = Temp->pNext;
+		return Temp->Data;
 	}
 
 	//				Adding Elements:
@@ -277,6 +291,11 @@ public:
 	friend ForwardList operator+(const ForwardList& left, const ForwardList& right);
 };
 
+operator int*(const ForwardList& list)
+{
+	
+}
+
 ForwardList operator+(const ForwardList& left, const ForwardList& right)
 {
 	ForwardList cat = left;	//CopyConstructor
@@ -288,7 +307,7 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 //#define BASE_CHECK
 //#define COUNT_CHECK
 //#define RANGE_BASE_FOR_ARRAY
-#define RANGE_BASED_FOR_LIST
+//#define RANGE_BASED_FOR_LIST
 //#define PREFORMANCE_CHECK
 
 void main()
@@ -391,4 +410,11 @@ void main()
 	//list2.print();  
 #endif // PREFORMANCE_CHECK
 
+	ForwardList list(70000);
+	cout << "ForwardList created, loading data...\n";
+	for (int i = 0; i < list.get_size(); i++)
+	{
+		list[i] = rand();
+	}
+	cout << "Data loaded to List\n";
 }
